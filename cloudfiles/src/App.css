@@ -1,314 +1,386 @@
+
+/* =========================
+   LAYOUT PRINCIPAL
+========================= */
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f6f8fc;
+  color: #202b3c;
 }
 
-/* Cabeçalho */
+.main-container {
+  width: min(100% - 40px, 900px);
+  margin: 0 auto;
+  padding: 52px 0 64px;
+  flex: 1;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
 
 .header {
+  height: 68px;
   background: #ffffff;
-  border-bottom: 1px solid #e8edf5;
+  border-bottom: 1px solid #e9edf4;
 }
 
 .header-container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 19px 24px;
+  width: min(100% - 40px, 1100px);
+  height: 100%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #172d50;
-  font-size: 23px;
+  color: #26364d;
+  font-size: 20px;
   font-weight: 750;
-  letter-spacing: -1px;
+  text-decoration: none;
+  letter-spacing: -0.7px;
 }
 
 .logo-icon {
-  width: 37px;
-  height: 37px;
-  background: #eaf2ff;
-  color: #2874df;
-  border-radius: 11px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 10px;
 }
 
 .logo-icon svg {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
 }
 
 .logo-highlight {
-  color: #2874df;
+  color: #3478e5;
 }
 
 .header-label {
-  color: #8491a5;
+  color: #8290a5;
   font-size: 13px;
+  font-weight: 500;
 }
 
-/* Conteúdo principal */
-
-.main-container {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 64px 24px 50px;
-  flex: 1;
-}
+/* =========================
+   INTRODUÇÃO
+========================= */
 
 .intro {
-  margin-bottom: 35px;
+  margin-bottom: 32px;
 }
 
 .eyebrow {
-  color: #2874df;
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #3478e5;
   font-size: 11px;
   font-weight: 750;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.4px;
 }
 
 .intro h1 {
-  color: #172d50;
-  font-size: clamp(30px, 5vw, 43px);
+  margin: 0;
+  color: #202b3c;
+  font-size: clamp(28px, 4vw, 36px);
   line-height: 1.2;
-  letter-spacing: -1.5px;
-  margin: 13px 0;
+  font-weight: 750;
+  letter-spacing: -1.4px;
 }
 
 .intro h1 span {
-  color: #2874df;
+  color: #3478e5;
 }
 
 .intro p {
-  color: #78869b;
-  font-size: 15px;
+  max-width: 510px;
+  margin: 12px 0 0;
+  color: #7b8799;
+  font-size: 14px;
   line-height: 1.7;
-  max-width: 520px;
 }
 
-/* Cartão de upload */
+/* =========================
+   CARTÃO DE UPLOAD
+========================= */
 
 .upload-card {
+  padding: 26px;
   background: #ffffff;
-  padding: 28px;
   border: 1px solid #e8edf5;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(33, 64, 112, 0.04);
+  border-radius: 15px;
+  box-shadow: 0 4px 18px rgba(31, 53, 85, 0.035);
 }
 
 .section-heading,
 .files-heading {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 23px;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-heading {
+  margin-bottom: 20px;
 }
 
 .section-heading h2,
 .files-heading h2 {
-  font-size: 18px;
-  color: #1c3152;
-  margin-bottom: 6px;
+  margin: 0;
+  color: #26364d;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 .section-heading p,
 .files-heading p {
-  color: #8491a5;
-  font-size: 13px;
+  margin: 5px 0 0;
+  color: #8a96a8;
+  font-size: 12px;
 }
 
 .heading-icon {
-  width: 37px;
-  height: 37px;
-  border-radius: 10px;
-  background: #edf4ff;
-  color: #2874df;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
-  font-size: 23px;
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 9px;
+  font-size: 20px;
 }
 
-/* Área de seleção */
+/* =========================
+   ÁREA DE ARRASTAR ARQUIVOS
+========================= */
 
 .drop-area {
-  min-height: 220px;
-  border: 1.5px dashed #c7d6eb;
-  border-radius: 12px;
-  background: #f9fbff;
+  min-height: 190px;
+  padding: 27px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 25px 15px;
+  background: #f9fbff;
+  border: 1.5px dashed #cbd8ec;
+  border-radius: 12px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .drop-area:hover,
 .drop-area.dragging {
-  border-color: #2874df;
   background: #f0f6ff;
+  border-color: #3478e5;
 }
 
 .upload-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 15px;
-  background: #e7f0ff;
-  color: #2874df;
+  width: 43px;
+  height: 43px;
   display: grid;
   place-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 13px;
+  color: #3478e5;
+  background: #eaf2ff;
+  border-radius: 12px;
 }
 
 .upload-icon svg {
-  width: 27px;
-  height: 27px;
+  width: 23px;
+  height: 23px;
 }
 
 .drop-area h3 {
-  font-size: 15px;
-  color: #273d5e;
-  margin-bottom: 8px;
+  margin: 0;
+  color: #34445b;
+  font-size: 14px;
+  font-weight: 650;
 }
 
 .drop-area p {
-  color: #8491a5;
-  font-size: 13px;
+  margin: 7px 0 0;
+  color: #8491a4;
+  font-size: 12px;
 }
 
 .drop-area p span {
-  color: #2874df;
+  color: #3478e5;
   font-weight: 650;
 }
 
 .drop-area small {
-  color: #a0aabd;
-  font-size: 11px;
   margin-top: 13px;
+  color: #a0aabc;
+  font-size: 11px;
 }
 
-/* Arquivo selecionado */
+/* =========================
+   ARQUIVO SELECIONADO
+========================= */
 
-.selected-file {
+.selected-file,
+.file-item {
   display: flex;
   align-items: center;
   gap: 13px;
-  padding: 13px;
-  margin-top: 16px;
-  border: 1px solid #e3eaf4;
-  border-radius: 10px;
   min-width: 0;
+}
+
+.selected-file {
+  margin-top: 14px;
+  padding: 13px;
+  background: #f8faff;
+  border: 1px solid #e6edf8;
+  border-radius: 10px;
 }
 
 .file-icon {
-  width: 42px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
-  background: #eaf2ff;
-  color: #2874df;
-  border-radius: 8px;
   display: grid;
   place-items: center;
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 9px;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 750;
 }
 
 .file-details {
+  min-width: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  flex: 1;
-  min-width: 0;
 }
 
 .file-details strong {
-  color: #344762;
+  overflow: hidden;
+  color: #35445a;
   font-size: 13px;
-  overflow-wrap: anywhere;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .file-details span {
-  color: #8b98aa;
+  overflow: hidden;
+  color: #8b97a9;
   font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .remove-button {
   width: 30px;
   height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
   border: none;
   border-radius: 7px;
-  background: #fff0f0;
-  color: #dc5252;
-  font-size: 22px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.remove-button:hover {
-  background: #ffe0e0;
-}
-
-/* Botão de envio */
-
-.upload-button {
-  width: 100%;
-  min-height: 48px;
-  margin-top: 18px;
-  border: none;
-  border-radius: 9px;
-  background: #2874df;
-  color: white;
-  font-size: 14px;
-  font-weight: 650;
+  background: transparent;
+  color: #9aa5b5;
+  font-size: 21px;
   cursor: pointer;
   transition: 0.2s ease;
 }
 
-.upload-button span {
-  font-size: 19px;
-  margin-right: 7px;
+.remove-button:hover {
+  background: #fff0ef;
+  color: #d64545;
 }
 
-.upload-button:hover:not(:disabled) {
-  background: #1c61c4;
-}
-
-.upload-button:disabled {
-  background: #a8bfdf;
+.remove-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Mensagens */
+/* =========================
+   BOTÃO DE ENVIO
+========================= */
+
+.upload-button {
+  width: 100%;
+  min-height: 43px;
+  margin-top: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: none;
+  border-radius: 9px;
+  background: #3478e5;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.upload-button:hover:not(:disabled) {
+  background: #2466ce;
+  transform: translateY(-1px);
+}
+
+.upload-button:disabled {
+  background: #a9c4ee;
+  cursor: not-allowed;
+}
+
+.upload-button span {
+  font-size: 17px;
+}
+
+/* =========================
+   MENSAGENS
+========================= */
 
 .status-message {
-  margin-top: 14px;
-  padding: 12px;
+  margin-top: 13px;
+  padding: 11px 13px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
 .status-message.info {
-  color: #245da5;
-  background: #edf5ff;
-  border: 1px solid #d8e8ff;
+  background: #eff5ff;
+  color: #2863b4;
 }
 
-/* Listagem */
+.status-message.success {
+  background: #edf9f1;
+  border: 1px solid #d2eedb;
+  color: #18794e;
+}
+
+.status-message.error {
+  background: #fff1f0;
+  border: 1px solid #f5d5d2;
+  color: #b42318;
+}
+
+/* =========================
+   LISTAGEM DE ARQUIVOS
+========================= */
 
 .files-section {
-  margin-top: 42px;
+  margin-top: 38px;
 }
 
 .files-heading {
@@ -316,97 +388,224 @@
 }
 
 .file-count {
-  background: #eaf2ff;
-  color: #2874df;
-  font-size: 11px;
-  font-weight: 650;
-  padding: 7px 11px;
+  flex-shrink: 0;
+  padding: 6px 11px;
+  color: #3478e5;
+  background: #edf4ff;
   border-radius: 20px;
-  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.empty-state {
+.files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.file-item {
+  padding: 13px 15px;
   background: #ffffff;
   border: 1px solid #e8edf5;
-  border-radius: 14px;
-  min-height: 205px;
+  border-radius: 11px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.file-item:hover {
+  border-color: #cbdcf5;
+  box-shadow: 0 3px 12px rgba(31, 53, 85, 0.04);
+}
+
+.open-file-button {
+  flex-shrink: 0;
+  padding: 8px 15px;
+  border-radius: 7px;
+  background: #edf4ff;
+  color: #3478e5;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.open-file-button:hover {
+  background: #3478e5;
+  color: #ffffff;
+}
+
+/* =========================
+   ESTADOS DA LISTAGEM
+========================= */
+
+.empty-state,
+.list-message {
+  padding: 35px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 12px;
 }
 
 .empty-icon {
-  width: 47px;
-  height: 47px;
-  background: #f0f4fa;
-  color: #91a3bb;
-  border-radius: 13px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  color: #8ba7d0;
+  background: #f0f5fc;
+  border-radius: 12px;
 }
 
 .empty-icon svg {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
 }
 
 .empty-state h3 {
-  color: #40536f;
-  font-size: 14px;
-  margin-bottom: 7px;
+  margin: 0;
+  color: #47566c;
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .empty-state p {
-  color: #94a0b1;
+  margin: 7px 0 0;
+  color: #98a3b3;
+  font-size: 11px;
+}
+
+.list-message {
+  min-height: 100px;
+  color: #8491a4;
   font-size: 12px;
 }
 
-/* Rodapé */
+.list-message.error {
+  gap: 12px;
+  color: #b42318;
+  background: #fffafa;
+  border-color: #f5d5d2;
+}
+
+.list-message.error p {
+  margin: 0;
+}
+
+.list-message button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #3478e5;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.list-message button:hover {
+  background: #2466ce;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
 
 .footer {
-  padding: 22px;
-  text-align: center;
-  border-top: 1px solid #e8edf5;
+  padding: 19px 20px;
   background: #ffffff;
+  border-top: 1px solid #e9edf4;
+  text-align: center;
 }
 
 .footer p {
+  margin: 0;
   color: #9aa5b5;
   font-size: 11px;
 }
 
-/* Responsividade */
+/* =========================
+   RESPONSIVIDADE
+========================= */
 
 @media (max-width: 600px) {
-  .header-container {
-    padding: 15px 18px;
+  .header {
+    height: 60px;
   }
 
+  .header-container {
+    width: calc(100% - 30px);
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .header-label {
+    font-size: 10px;
+  }
+
+  .main-container {
+    width: calc(100% - 30px);
+    padding: 35px 0 45px;
+  }
+
+  .intro {
+    margin-bottom: 25px;
+  }
+
+  .intro h1 {
+    font-size: 28px;
+  }
+
+  .intro p {
+    font-size: 13px;
+  }
+
+  .upload-card {
+    padding: 17px;
+  }
+
+  .drop-area {
+    min-height: 170px;
+    padding: 22px 12px;
+  }
+
+  .files-section {
+    margin-top: 30px;
+  }
+
+  .file-item {
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .file-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 9px;
+  }
+
+  .open-file-button {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 360px) {
   .header-label {
     display: none;
   }
 
-  .main-container {
-    padding: 42px 17px;
-  }
-
-  .upload-card {
-    padding: 19px;
-  }
-
-  .drop-area {
-    min-height: 200px;
-  }
-
   .intro h1 {
-    font-size: 32px;
+    font-size: 25px;
   }
 
-  .files-section {
-    margin-top: 32px;
+  .section-heading h2,
+  .files-heading h2 {
+    font-size: 15px;
   }
 }

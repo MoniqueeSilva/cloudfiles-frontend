@@ -1,24 +1,88 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
+
+const API_URL = "http://localhost:8081/api/arquivos";
 
 function App() {
   const inputRef = useRef(null);
 
   const [arquivo, setArquivo] = useState(null);
+  const [arquivos, setArquivos] = useState([]);
   const [arrastando, setArrastando] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [carregando, setCarregando] = useState(true);
   const [mensagem, setMensagem] = useState("");
   const [tipoMensagem, setTipoMensagem] = useState("");
+  const [erroListagem, setErroListagem] = useState("");
 
   function formatarTamanho(bytes) {
     if (bytes < 1024) return `${bytes} bytes`;
+
     if (bytes < 1024 * 1024) {
       return `${(bytes / 1024).toFixed(1)} KB`;
     }
+
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   }
 
+  function obterExtensao(nome) {
+    if (!nome || !nome.includes(".")) return "FILE";
+
+    return nome.split(".").pop().slice(0, 5).toUpperCase();
+  }
+
+  function mostrarMensagem(texto, tipo) {
+    setMensagem(texto);
+    setTipoMensagem(tipo);
+  }
+
+  async function interpretarResposta(resposta) {
+    const texto = await resposta.text();
+
+    if (!texto) return {};
+
+    try {
+      return JSON.parse(texto);
+    } catch {
+      return { message: texto };
+    }
+  }
+
+  const carregarArquivos = useCallback(async () => {
+    setCarregando(true);
+    setErroListagem("");
+
+    try {
+      const resposta = await fetch(API_URL);
+
+      if (!resposta.ok) {
+        const dados = await interpretarResposta(resposta);
+
+        throw new Error(
+          dados.erro ||
+          dados.message ||
+          "Não foi possível carregar os arquivos."
+        );
+      }
+
+      const dados = await resposta.json();
+
+      setArquivos(Array.isArray(dados) ? dados : []);
+    } catch (erro) {
+      setErroListagem(
+        erro.message || "Erro ao conectar com o servidor."
+      );
+    } finally {
+      setCarregando(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    carregarArquivos();
+  }, [carregarArquivos]);
+
   function selecionarArquivo(file) {
-    if (!file) return;
+    if (!file || enviando) return;
 
     setArquivo(file);
     setMensagem("");
@@ -37,6 +101,8 @@ function App() {
   }
 
   function removerArquivo() {
+    if (enviando) return;
+
     setArquivo(null);
     setMensagem("");
     setTipoMensagem("");
@@ -46,11 +112,48 @@ function App() {
     }
   }
 
-  function enviarArquivo() {
-    setMensagem(
-      "A interface está pronta! O envio será habilitado após a integração com o backend."
-    );
-    setTipoMensagem("info");
+  async function enviarArquivo() {
+    if (!arquivo || enviando) return;
+
+    setEnviando(true);
+    mostrarMensagem("Enviando arquivo...", "info");
+
+    try {
+      const formulario = new FormData();
+      formulario.append("arquivo", arquivo);
+
+      const resposta = await fetch(API_URL, {
+        method: "POST",
+        body: formulario,
+      });
+
+      const dados = await interpretarResposta(resposta);
+
+      if (!resposta.ok) {
+        throw new Error(
+          dados.erro ||
+          dados.message ||
+          "Não foi possível enviar o arquivo."
+        );
+      }
+
+      setArquivo(null);
+
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+
+      mostrarMensagem("Arquivo enviado com sucesso!", "success");
+
+      await carregarArquivos();
+    } catch (erro) {
+      mostrarMensagem(
+        erro.message || "Erro ao enviar o arquivo. Verifique sua conexão.",
+        "error"
+      );
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -76,17 +179,23 @@ function App() {
                 />
               </svg>
             </span>
-            <span>Cloud<span className="logo-highlight">Files</span></span>
+            <span>
+              Cloud<span className="logo-highlight">Files</span>
+            </span>
           </a>
 
-          <span className="header-label">Armazenamento de arquivos</span>
+          <span className="header-label">
+            Armazenamento de arquivos
+          </span>
         </div>
       </header>
 
       <main className="main-container">
         <section className="intro">
           <span className="eyebrow">SEU ESPAÇO NA NUVEM</span>
-          <h1>Seus arquivos, <span>em um só lugar.</span></h1>
+          <h1>
+            Seus arquivos, <span>em um só lugar.</span>
+          </h1>
           <p>
             Envie e acesse seus arquivos de maneira simples e prática.
             Tudo organizado em um só lugar.
@@ -106,17 +215,29 @@ function App() {
             className={`drop-area ${arrastando ? "dragging" : ""}`}
             onDragOver={(event) => {
               event.preventDefault();
-              setArrastando(true);
+
+              if (!enviando) {
+                setArrastando(true);
+              }
             }}
             onDragLeave={() => setArrastando(false)}
             onDrop={handleDrop}
-            onClick={() => inputRef.current.click()}
+            onClick={() => {
+              if (!enviando) {
+                inputRef.current?.click();
+              }
+            }}
             role="button"
             tabIndex={0}
+            aria-label="Selecionar arquivo para envio"
+            aria-disabled={enviando}
             onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
+              if (
+                !enviando &&
+                (event.key === "Enter" || event.key === " ")
+              ) {
                 event.preventDefault();
-                inputRef.current.click();
+                inputRef.current?.click();
               }
             }}
           >
@@ -125,6 +246,7 @@ function App() {
               type="file"
               onChange={handleFileChange}
               hidden
+              disabled={enviando}
             />
 
             <div className="upload-icon">
@@ -140,13 +262,17 @@ function App() {
             </div>
 
             <h3>Arraste seu arquivo até aqui</h3>
-            <p>ou <span>clique para selecionar</span> no seu dispositivo</p>
+            <p>
+              ou <span>clique para selecionar</span> no seu dispositivo
+            </p>
             <small>Selecione um arquivo por vez</small>
           </div>
 
           {arquivo && (
             <div className="selected-file">
-              <div className="file-icon">DOC</div>
+              <div className="file-icon">
+                {obterExtensao(arquivo.name)}
+              </div>
 
               <div className="file-details">
                 <strong>{arquivo.name}</strong>
@@ -161,6 +287,7 @@ function App() {
                 onClick={removerArquivo}
                 aria-label="Remover arquivo selecionado"
                 title="Remover arquivo"
+                disabled={enviando}
               >
                 ×
               </button>
@@ -170,9 +297,10 @@ function App() {
           <button
             className="upload-button"
             onClick={enviarArquivo}
-            disabled={!arquivo}
+            disabled={!arquivo || enviando}
           >
-            <span>↑</span> Enviar arquivo
+            <span>↑</span>
+            {enviando ? "Enviando..." : "Enviar arquivo"}
           </button>
 
           {mensagem && (
@@ -188,34 +316,81 @@ function App() {
               <h2>Seus arquivos</h2>
               <p>Arquivos armazenados na sua nuvem.</p>
             </div>
-            <span className="file-count">0 arquivos</span>
+
+            <span className="file-count">
+              {arquivos.length}{" "}
+              {arquivos.length === 1 ? "arquivo" : "arquivos"}
+            </span>
           </div>
 
-          <div className="empty-state">
-            <div className="empty-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M6 3.75h8l4 4V20.25H6V3.75Z"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14 3.75v4h4M9 13h6M9 16.5h6"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
+          {carregando ? (
+            <div className="list-message">
+              Carregando arquivos...
             </div>
-            <h3>Nenhum arquivo por aqui ainda</h3>
-            <p>Seus arquivos enviados aparecerão nesta área.</p>
-          </div>
+          ) : erroListagem ? (
+            <div className="list-message error">
+              <p>{erroListagem}</p>
+              <button onClick={carregarArquivos}>
+                Tentar novamente
+              </button>
+            </div>
+          ) : arquivos.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M6 3.75h8l4 4V20.25H6V3.75Z"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M14 3.75v4h4M9 13h6M9 16.5h6"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+              <h3>Nenhum arquivo por aqui ainda</h3>
+              <p>Seus arquivos enviados aparecerão nesta área.</p>
+            </div>
+          ) : (
+            <div className="files-list">
+              {arquivos.map((item) => (
+                <article className="file-item" key={item.id}>
+                  <div className="file-icon">
+                    {obterExtensao(item.nome)}
+                  </div>
+
+                  <div className="file-details">
+                    <strong>{item.nome}</strong>
+                    <span>
+                      {item.tipo || "Tipo não informado"} ·{" "}
+                      {formatarTamanho(item.tamanho || 0)}
+                    </span>
+                  </div>
+
+                  <a
+                    className="open-file-button"
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Abrir ${item.nome}`}
+                  >
+                    Abrir
+                  </a>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 
       <footer className="footer">
-        <p>CloudFiles © 2026 · Armazenamento simples e acessível.</p>
+        <p>
+          CloudFiles © 2026 · Armazenamento simples e acessível.
+        </p>
       </footer>
     </div>
   );
