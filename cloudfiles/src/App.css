@@ -1,184 +1,611 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
+/* =========================
+   LAYOUT PRINCIPAL
+========================= */
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
+.app {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
+  background: #f6f8fc;
+  color: #202b3c;
+}
+
+.main-container {
+  width: min(100% - 40px, 900px);
+  margin: 0 auto;
+  padding: 52px 0 64px;
+  flex: 1;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.header {
+  height: 68px;
+  background: #ffffff;
+  border-bottom: 1px solid #e9edf4;
+}
+
+.header-container {
+  width: min(100% - 40px, 1100px);
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #26364d;
+  font-size: 20px;
+  font-weight: 750;
+  text-decoration: none;
+  letter-spacing: -0.7px;
+}
+
+.logo-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
   place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 10px;
 }
 
-#next-steps {
+.logo-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.logo-highlight {
+  color: #3478e5;
+}
+
+.header-label {
+  color: #8290a5;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* =========================
+   INTRODUÇÃO
+========================= */
+
+.intro {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #3478e5;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.4px;
+}
+
+.intro h1 {
+  margin: 0;
+  color: #202b3c;
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -1.4px;
+}
+
+.intro h1 span {
+  color: #3478e5;
+}
+
+.intro p {
+  max-width: 510px;
+  margin: 12px 0 0;
+  color: #7b8799;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================
+   CARTÃO DE UPLOAD
+========================= */
+
+.upload-card {
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 15px;
+  box-shadow: 0 4px 18px rgba(31, 53, 85, 0.035);
+}
+
+.section-heading,
+.files-heading {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.section-heading {
+  margin-bottom: 20px;
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+.section-heading h2,
+.files-heading h2 {
+  margin: 0;
+  color: #26364d;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.section-heading p,
+.files-heading p {
+  margin: 5px 0 0;
+  color: #8a96a8;
+  font-size: 12px;
+}
+
+.heading-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 9px;
+  font-size: 20px;
+}
+
+/* =========================
+   ÁREA DE ARRASTAR ARQUIVOS
+========================= */
+
+.drop-area {
+  min-height: 190px;
+  padding: 27px 20px;
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #f9fbff;
+  border: 1.5px dashed #cbd8ec;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.drop-area:hover,
+.drop-area.dragging {
+  background: #f0f6ff;
+  border-color: #3478e5;
+}
+
+.upload-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 13px;
+  color: #3478e5;
+  background: #eaf2ff;
+  border-radius: 12px;
+}
+
+.upload-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.drop-area h3 {
+  margin: 0;
+  color: #34445b;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.drop-area p {
+  margin: 7px 0 0;
+  color: #8491a4;
+  font-size: 12px;
+}
+
+.drop-area p span {
+  color: #3478e5;
+  font-weight: 650;
+}
+
+.drop-area small {
+  margin-top: 13px;
+  color: #a0aabc;
+  font-size: 11px;
+}
+
+/* =========================
+   ARQUIVO SELECIONADO
+========================= */
+
+.selected-file,
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.selected-file {
+  margin-top: 14px;
+  padding: 13px;
+  background: #f8faff;
+  border: 1px solid #e6edf8;
+  border-radius: 10px;
+}
+
+.file-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.file-details {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.file-details strong {
+  overflow: hidden;
+  color: #35445a;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-details span {
+  overflow: hidden;
+  color: #8b97a9;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-button {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #9aa5b5;
+  font-size: 21px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.remove-button:hover {
+  background: #fff0ef;
+  color: #d64545;
+}
+
+.remove-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   BOTÃO DE ENVIO
+========================= */
+
+.upload-button {
+  width: 100%;
+  min-height: 43px;
+  margin-top: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: none;
+  border-radius: 9px;
+  background: #3478e5;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.upload-button:hover:not(:disabled) {
+  background: #2466ce;
+  transform: translateY(-1px);
+}
+
+.upload-button:disabled {
+  background: #a9c4ee;
+  cursor: not-allowed;
+}
+
+.upload-button span {
+  font-size: 17px;
+}
+
+/* =========================
+   MENSAGENS
+========================= */
+
+.status-message {
+  margin-top: 13px;
+  padding: 11px 13px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.status-message.info {
+  background: #eff5ff;
+  color: #2863b4;
+}
+
+.status-message.success {
+  background: #edf9f1;
+  border: 1px solid #d2eedb;
+  color: #18794e;
+}
+
+.status-message.error {
+  background: #fff1f0;
+  border: 1px solid #f5d5d2;
+  color: #b42318;
+}
+
+/* =========================
+   LISTAGEM DE ARQUIVOS
+========================= */
+
+.files-section {
+  margin-top: 38px;
+}
+
+.files-heading {
+  margin-bottom: 17px;
+}
+
+.file-count {
+  flex-shrink: 0;
+  padding: 6px 11px;
+  color: #3478e5;
+  background: #edf4ff;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.file-item {
+  padding: 13px 15px;
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 11px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.file-item:hover {
+  border-color: #cbdcf5;
+  box-shadow: 0 3px 12px rgba(31, 53, 85, 0.04);
+}
+
+.open-file-button {
+  flex-shrink: 0;
+  padding: 8px 15px;
+  border-radius: 7px;
+  background: #edf4ff;
+  color: #3478e5;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.open-file-button:hover {
+  background: #3478e5;
+  color: #ffffff;
+}
+
+/* =========================
+   ESTADOS DA LISTAGEM
+========================= */
+
+.empty-state,
+.list-message {
+  padding: 35px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 12px;
+}
+
+.empty-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  color: #8ba7d0;
+  background: #f0f5fc;
+  border-radius: 12px;
+}
+
+.empty-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.empty-state h3 {
+  margin: 0;
+  color: #47566c;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.empty-state p {
+  margin: 7px 0 0;
+  color: #98a3b3;
+  font-size: 11px;
+}
+
+.list-message {
+  min-height: 100px;
+  color: #8491a4;
+  font-size: 12px;
+}
+
+.list-message.error {
+  gap: 12px;
+  color: #b42318;
+  background: #fffafa;
+  border-color: #f5d5d2;
+}
+
+.list-message.error p {
+  margin: 0;
+}
+
+.list-message button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #3478e5;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.list-message button:hover {
+  background: #2466ce;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+
+.footer {
+  padding: 19px 20px;
+  background: #ffffff;
+  border-top: 1px solid #e9edf4;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+  color: #9aa5b5;
+  font-size: 11px;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 600px) {
+  .header {
+    height: 60px;
+  }
+
+  .header-container {
+    width: calc(100% - 30px);
+  }
 
   .logo {
-    height: 18px;
+    font-size: 18px;
   }
 
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
+  .header-label {
+    font-size: 10px;
   }
 
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+  .main-container {
+    width: calc(100% - 30px);
+    padding: 35px 0 45px;
+  }
 
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
+  .intro {
+    margin-bottom: 25px;
+  }
 
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
+  .intro h1 {
+    font-size: 28px;
+  }
+
+  .intro p {
+    font-size: 13px;
+  }
+
+  .upload-card {
+    padding: 17px;
+  }
+
+  .drop-area {
+    min-height: 170px;
+    padding: 22px 12px;
+  }
+
+  .files-section {
+    margin-top: 30px;
+  }
+
+  .file-item {
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .file-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 9px;
+  }
+
+  .open-file-button {
+    padding: 8px 10px;
   }
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+@media (max-width: 360px) {
+  .header-label {
+    display: none;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  .intro h1 {
+    font-size: 25px;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+
+  .section-heading h2,
+  .files-heading h2 {
+    font-size: 15px;
   }
 }
