@@ -1,85 +1,35 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
-const API_URL = "http://localhost:8081/api/arquivos";
+// Importando o Hook, o Serviço de API e os Formatadores
+import { useArquivos } from "./hooks/useArquivos";
+import { enviarArquivo as enviarArquivoAPI } from "./services/api";
+import { formatarTamanho, obterExtensao } from "./utils/formatadores";
 
 function App() {
   const inputRef = useRef(null);
 
+  // O Hook gerencia o estado da lista, carregamento, erro e a função de recarregar
+  const { arquivos, carregando, erroListagem, carregarArquivos } = useArquivos();
+
+  // Estados locais do componente (seleção e envio)
   const [arquivo, setArquivo] = useState(null);
-  const [arquivos, setArquivos] = useState([]);
   const [arrastando, setArrastando] = useState(false);
   const [enviando, setEnviando] = useState(false);
-  const [carregando, setCarregando] = useState(true);
   const [mensagem, setMensagem] = useState("");
   const [tipoMensagem, setTipoMensagem] = useState("");
-  const [erroListagem, setErroListagem] = useState("");
 
-  function formatarTamanho(bytes) {
-    if (bytes < 1024) return `${bytes} bytes`;
-
-    if (bytes < 1024 * 1024) {
-      return `${(bytes / 1024).toFixed(1)} KB`;
-    }
-
-    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-  }
-
-  function obterExtensao(nome) {
-    if (!nome || !nome.includes(".")) return "FILE";
-
-    return nome.split(".").pop().slice(0, 5).toUpperCase();
-  }
+  // O useEffect está aqui, no App.jsx. Ele apenas dispara a função.
+  // Como a função é assíncrona e o setState dela acontece apenas após o await,
+  // o React não dispara o aviso de "cascading render".
+  useEffect(() => {
+    carregarArquivos();
+  }, [carregarArquivos]);
 
   function mostrarMensagem(texto, tipo) {
     setMensagem(texto);
     setTipoMensagem(tipo);
   }
-
-  async function interpretarResposta(resposta) {
-    const texto = await resposta.text();
-
-    if (!texto) return {};
-
-    try {
-      return JSON.parse(texto);
-    } catch {
-      return { message: texto };
-    }
-  }
-
-  const carregarArquivos = useCallback(async () => {
-    setCarregando(true);
-    setErroListagem("");
-
-    try {
-      const resposta = await fetch(API_URL);
-
-      if (!resposta.ok) {
-        const dados = await interpretarResposta(resposta);
-
-        throw new Error(
-          dados.erro ||
-          dados.message ||
-          "Não foi possível carregar os arquivos."
-        );
-      }
-
-      const dados = await resposta.json();
-
-      setArquivos(Array.isArray(dados) ? dados : []);
-    } catch (erro) {
-      setErroListagem(
-        erro.message || "Erro ao conectar com o servidor."
-      );
-    } finally {
-      setCarregando(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    carregarArquivos();
-  }, [carregarArquivos]);
 
   function selecionarArquivo(file) {
     if (!file || enviando) return;
@@ -119,23 +69,7 @@ function App() {
     mostrarMensagem("Enviando arquivo...", "info");
 
     try {
-      const formulario = new FormData();
-      formulario.append("arquivo", arquivo);
-
-      const resposta = await fetch(API_URL, {
-        method: "POST",
-        body: formulario,
-      });
-
-      const dados = await interpretarResposta(resposta);
-
-      if (!resposta.ok) {
-        throw new Error(
-          dados.erro ||
-          dados.message ||
-          "Não foi possível enviar o arquivo."
-        );
-      }
+      await enviarArquivoAPI(arquivo);
 
       setArquivo(null);
 
@@ -145,6 +79,7 @@ function App() {
 
       mostrarMensagem("Arquivo enviado com sucesso!", "success");
 
+      // Chama a função de recarregar fornecida pelo Hook
       await carregarArquivos();
     } catch (erro) {
       mostrarMensagem(
@@ -183,10 +118,6 @@ function App() {
               Cloud<span className="logo-highlight">Files</span>
             </span>
           </a>
-
-          <span className="header-label">
-            Armazenamento de arquivos
-          </span>
         </div>
       </header>
 
